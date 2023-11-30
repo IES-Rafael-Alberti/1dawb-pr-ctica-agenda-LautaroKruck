@@ -38,17 +38,72 @@ def borrar_consola():
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
         os.system ("cls")
 
+def mostrar_menu():
+    
+    print("\nMenú:")
+    print("1. Nuevo contacto")
+    print("2. Modificar contacto")
+    print("3. Eliminar contacto")
+    print("4. Vaciar agenda")
+    print("5. Cargar agenda inicial")
+    print("6. Mostrar contactos por criterio")
+    print("7. Mostrar la agenda completa")
+    print("8. Salir")
 
-def cargar_contactos(contactos: list):
-    """ Carga los contactos iniciales de la agenda desde un fichero
-    ...
-    """
-    #TODO: Controlar los posibles problemas derivados del uso de ficheros...
+def pedir_opcion():
+    borrar_consola()
 
-    with open(RUTA_FICHERO, 'r') as fichero:
-        for linea in fichero:
-            print(linea)
+    base_datos_clientes = {}
 
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opción (1-8): ")
+
+        if opcion == '1':
+            agregar_contacto(base_datos_clientes)
+        elif opcion == '2':
+            modificar_contacto(base_datos_clientes)
+        elif opcion == '3':
+            eliminar_contacto(base_datos_clientes)
+        elif opcion == '4':
+            vaciar_agenda(base_datos_clientes)
+        elif opcion == '5':
+            cargar_agenda_ini(base_datos_clientes)
+        elif opcion == '6':
+            mostrar_agenda_crit(base_datos_clientes)
+        elif opcion == '7':
+            mostrar_agenda(base_datos_clientes)
+        elif opcion == '8':
+            print("Programa terminado.")
+            break
+        else:
+            print("Opción no válida. Por favor, elija una opción del 1 al 8.")
+
+def agregar_contacto():
+    
+    nombre = input("Ingrese el nombre del contacto: ").title()
+    apellido = input("Ingrese el nombre del contacto: ").title()
+
+    telefono = False
+    while not telefono:
+        telefono = input("Ingrese el teléfono del contacto: ")
+        try:
+            len(telefono) == 9
+        except KeyError:
+            print(f"**ERROR** teléfono no válido.")
+    
+    correo = input("Ingrese el correo del cliente: ")
+    
+    #TODO: Crear un diccionario cliente con toda la información...
+    contacto = {"nombre": nombre, "apellido":apellido, "telefono": telefono}
+    #TODO: Añadir el diccionario cliente que previamente has creado al 
+    # diccionario principal que hemos llamado base_datos...
+    agenda[correo] = contacto
+
+    print(f"Cliente {nombre} añadido correctamente.")
+
+def modificar_contacto():
+    print()
 
 def eliminar_contacto(contactos: list, email: str):
     """ Elimina un contacto de la agenda
@@ -80,7 +135,15 @@ def agenda(contactos: list):
         #TODO: Se valorará que utilices la diferencia simétrica de conjuntos para comprobar que la opción es un número entero del 1 al 6
         if opcion in ?:
 
+def cargar_contactos(contactos: list):
+    """ Carga los contactos iniciales de la agenda desde un fichero
+    ...
+    """
+    #TODO: Controlar los posibles problemas derivados del uso de ficheros...
 
+    with open(RUTA_FICHERO, 'r') as fichero:
+        for linea in fichero:
+            print(linea)
 
 def pulse_tecla_para_continuar():
     """ Muestra un mensaje y realiza una pausa hasta que se pulse una tecla
