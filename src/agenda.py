@@ -168,7 +168,7 @@ def pedir_telefono():
 
 def validar_telefono(input_tel: str) -> bool:
     """Valida el formato del número de teléfono.
-    
+
     Args:
         input_tel (str): Número de teléfono a validar.
 
@@ -177,10 +177,12 @@ def validar_telefono(input_tel: str) -> bool:
     """
     input_tel = input_tel.replace(" ", "").replace("-", "")
 
-    if input_tel.startswith("+"):
-        return len(input_tel) == 12
+    if input_tel[:3] == "+34" and len(input_tel) == 12:
+        return True
+    elif len(input_tel) == 9 and input_tel.isdigit():
+        return True
     else:
-        return len(input_tel) == 9
+        return False
 
 # BUSCAR CONTACTO
 
