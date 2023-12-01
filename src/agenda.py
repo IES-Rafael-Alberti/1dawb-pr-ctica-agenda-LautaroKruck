@@ -77,7 +77,7 @@ def pedir_opcion():
                 print("Elije una opción correcta (1-8)")
         except ValueError:
             print("Debes ingresar un valor numérico (1-8)")
-            
+
     return opcion
 
 # NUEVO CONTACTO 
@@ -100,9 +100,17 @@ def agregar_contacto(contactos : list):
     print(f"Contacto {nombre} {apellido} añadido correctamente.")
 
 
-def pedir_email(contactos: list):
+def pedir_email(contactos: list) -> str:
     """Solicita y valida la entrada del correo electrónico del contacto.
-    ...
+
+    Args:
+        contactos (list): Lista de contactos.
+
+    Raises:
+        ValueError: Si el email es una cadena vacía, no es válido o ya existe en la agenda.
+
+    Returns:
+        str: Correo electrónico válido.
     """
     email = input("Ingrese el correo del contacto: ")
     
@@ -121,9 +129,15 @@ def pedir_email(contactos: list):
     return email
 
 
-def validar_email(contactos  : list, email : str):
+def validar_email(contactos: list, email: str) -> bool:
     """Valida si el correo electrónico ya existe en la lista de contactos.
-    ...
+
+    Args:
+        contactos (list): Lista de contactos.
+        email (str): Correo electrónico a validar.
+
+    Returns:
+        bool: True si el correo es válido y no existe en la lista, False en caso contrario.
     """
     if "@gmail.com" not in email:
         return False
@@ -152,27 +166,28 @@ def pedir_telefono():
     return lista_tel
 
 
-def validar_telefono(input_tel : str):
+def validar_telefono(input_tel: str) -> bool:
     """Valida el formato del número de teléfono.
-    ...
+    
+    Args:
+        input_tel (str): Número de teléfono a validar.
+
+    Returns:
+        bool: True si el formato es válido, False en caso contrario.
     """
     input_tel = input_tel.replace(" ", "").replace("-", "")
-    try:
-        if input_tel[0] == "+":
-            return len(input_tel) == 12  
-        else:
-            return len(input_tel) == 9
-    except ValueError:
-        return False
+
+    if input_tel.startswith("+"):
+        return len(input_tel) == 12
+    else:
+        return len(input_tel) == 9
 
 # BUSCAR CONTACTO
 
-def buscar_contacto(contactos : list, email : str):
+def buscar_contacto(contactos: list, email: str):
     """ Busca la posición de un contacto en la lista por su email.
     ...
     """
-    email = input("Ingrese el correo del contacto: ")
-
     for pos, contacto in enumerate(contactos):
         if contacto.get("email") == email:
             return pos
