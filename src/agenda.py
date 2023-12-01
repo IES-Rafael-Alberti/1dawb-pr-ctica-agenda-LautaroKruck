@@ -72,7 +72,7 @@ def pedir_opcion():
 
 
 def agregar_contacto(contactos):
-    nombre = input("Ingrese el nombre del contacto: ").title()
+    nombre = input("\nIngrese el nombre del contacto: ").title()
     apellido = input("Ingrese el apellido del contacto: ").title()
     
     email = pedir_email(contactos)
@@ -111,7 +111,7 @@ def validar_email(contactos, email):
 def pedir_telefono():
     lista_tel = []
     input_tel = input("Ingrese el teléfono del contacto (deje en blanco para terminar): ")
-    
+    input_tel = input_tel.replace(" ", "").replace("-", "").upper()
     while input_tel:
         if validar_telefono(input_tel):
             lista_tel.append(input_tel)
@@ -192,18 +192,30 @@ def cargar_contactos(contactos: list):
         for linea in fichero:
             print(linea)
 
+def mostrar_contactos(contactos : list):
+    # Clonar la lista de contactos para no modificar la original
+    contactos_ordenados = sorted(contactos, key=lambda x: x['nombre'])
+
+    print("AGENDA ({}):".format(len(contactos)))
+    print("------")
+    
+    for contacto in contactos_ordenados:
+        print(f"Nombre: {contacto['nombre']} ({contacto.get('email')})")
+        telefonos = contacto.get('telefonos')
+        print("Teléfonos: {}".format(" / ".join(telefonos)))
+        print("......")
+
 
 def main():
     """ Función principal del programa
     """
     borrar_consola()
 
-    #TODO: Asignar una estructura de datos vacía para trabajar con la agenda
     contactos = []
 
     #TODO: Modificar la función cargar_contactos para que almacene todos los contactos del fichero en una lista con un diccionario por contacto (claves: nombre, apellido, email y telefonos)
 
-    #TODO: Realizar una llamada a la función cargar_contacto con todo lo necesario para que funcione correctamente.
+
     cargar_contactos(contactos)
 
     #TODO: Crear función para agregar un contacto. Debes tener en cuenta lo siguiente:
@@ -223,33 +235,16 @@ def main():
     pulse_tecla_para_continuar()
     borrar_consola()
 
-    #TODO: Realizar una llamada a la función eliminar_contacto con todo lo necesario para que funcione correctamente, eliminando el contacto con el email rciruelo@gmail.com
-    eliminar_contacto(contactos )
-    
 
+    eliminar_contacto(contactos )
 
 
     pulse_tecla_para_continuar()
     borrar_consola()
 
-    #TODO: Crear función mostrar_contactos para que muestre todos los contactos de la agenda con el siguiente formato:
-    # ** IMPORTANTE: debe mostrarlos ordenados según el nombre, pero no modificar la lista de contactos de la agenda original **
-    #
-    # AGENDA (6)
-    # ------
-    # Nombre: Antonio Amargo (aamargo@gmail.com)
-    # Teléfonos: niguno
-    # ......
-    # Nombre: Daniela Alba (danalba@gmail.com)
-    # Teléfonos: +34-600606060 / +34-670898934
-    # ......
-    # Nombre: Laura Iglesias (liglesias@gmail.com)
-    # Teléfonos: 666777333 / 666888555 / 607889988
-    # ......
-    # ** resto de contactos **
-    #
-    #TODO: Realizar una llamada a la función mostrar_contactos con todo lo necesario para que funcione correctamente.
-    mostrar_contactos("?")
+
+    mostrar_contactos(contactos)
+
 
     pulse_tecla_para_continuar()
     borrar_consola()
