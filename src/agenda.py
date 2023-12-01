@@ -329,14 +329,26 @@ def main():
     borrar_consola()
 
     contactos = []
+    
+    cargar_contactos(contactos)
 
-    mostrar_menu()
+    agregar_contacto(contactos)
+
+    pulse_tecla_para_continuar()
+    borrar_consola()
+
+    eliminar_contacto(contactos)
+
+    pulse_tecla_para_continuar()
+    borrar_consola()
+
+
+    mostrar_contactos(contactos)
+
+    pulse_tecla_para_continuar()
+    borrar_consola()
 
     agenda(contactos)
-
-    #TODO: Para la opción 3, modificar un contacto, deberás desarrollar las funciones necesarias para actualizar la información de un contacto.
-    #TODO: También deberás desarrollar la opción 6 que deberá preguntar por el criterio de búsqueda (nombre, apellido, email o telefono) y el valor a buscar para mostrar los contactos que encuentre en la agenda.
-    
 
 
 if __name__ == "__main__":
