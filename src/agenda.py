@@ -69,8 +69,7 @@ def pedir_opcion():
     ...
     """
     opcion = None
-    while opcion not in OPCIONES_MENU:
-
+    while opcion is None or opcion not in OPCIONES_MENU:
         try:
             opcion = int(input("Elije una opción: "))
             if opcion not in OPCIONES_MENU:
