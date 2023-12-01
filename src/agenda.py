@@ -18,21 +18,21 @@ import os
 import pathlib
 from os import path
 
-# Constantes globales
+# CONSTANTES GLOBALES
+
 RUTA = pathlib.Path(__file__).parent.absolute() 
 
 NOMBRE_FICHERO = 'contactos.csv'
 
 RUTA_FICHERO = path.join(RUTA, NOMBRE_FICHERO)
 
-#TODO: Crear un conjunto con las posibles opciones del menú de la agenda
 OPCIONES_MENU = {1, 2, 3, 4, 5, 6, 7, 8}
 
 OPCIONES_CRITERIO = {1: "nombre", 2: "apellido", 3: "email", 4: "telefono"}
-#TODO: Utiliza este conjunto en las funciones agenda() y pedir_opcion()
 
 def borrar_consola():
     """ Limpia la consola
+    ...
     """
     if os.name == "posix":
         os.system ("clear")
@@ -42,12 +42,16 @@ def borrar_consola():
 
 def pulse_tecla_para_continuar():
     """ Muestra un mensaje y realiza una pausa hasta que se pulse una tecla
+    ...
     """
     print("\n")
     os.system("pause")
 
 
 def mostrar_menu():
+    """ Imprime el menu por pantalla
+    ...
+    """
     print("AGENDA")
     print("-------")
     print("1. Nuevo contacto")
@@ -61,6 +65,9 @@ def mostrar_menu():
 
 
 def pedir_opcion():
+    """
+    ...
+    """
     opc_ok = False
     while not opc_ok:
         try:
@@ -74,7 +81,11 @@ def pedir_opcion():
             print("Debes ingresar valor numerico (1-8))")
 
 # NUEVO CONTACTO 
+
 def agregar_contacto(contactos : list):
+    """
+    ...
+    """
     nombre = input("\nIngrese el nombre del contacto: ").title()
     apellido = input("Ingrese el apellido del contacto: ").title()
     
@@ -92,6 +103,9 @@ def agregar_contacto(contactos : list):
 
 
 def pedir_email(contactos : list):
+    """
+    ...
+    """
     email = ""
     email = input("Ingrese el correo del contacto: ")
     while not email or not validar_email(contactos, email):
@@ -102,6 +116,9 @@ def pedir_email(contactos : list):
 
 
 def validar_email(contactos  : list, email : str):
+    """
+    ...
+    """
     if "@gmail.com" not in email:
         return False
 
@@ -113,6 +130,9 @@ def validar_email(contactos  : list, email : str):
 
 
 def pedir_telefono():
+    """
+    ...
+    """
     lista_tel = []
     input_tel = input("Ingrese el teléfono del contacto (deje en blanco para terminar): ")
     while input_tel:
@@ -126,6 +146,9 @@ def pedir_telefono():
 
 
 def validar_telefono(input_tel : str):
+    """
+    ...
+    """
     input_tel.replace(" ", "").replace("-", "")
     try:
         if input_tel[0] == "+":
@@ -135,6 +158,7 @@ def validar_telefono(input_tel : str):
     except ValueError:
         return False
 
+# BUSCAR CONTACTO
 
 def buscar_contacto(contactos : list, email : str):
     """ Busca la posición de un contacto en la lista por su email
@@ -142,14 +166,40 @@ def buscar_contacto(contactos : list, email : str):
     """
     email = input("Ingrese el correo del contacto: ")
 
-    for i, contacto in enumerate(contactos):
+    for pos, contacto in enumerate(contactos):
         if contacto.get("email") == email:
-            return i
+            return pos
     return None
 
+# MODIFICAR CONTACTO
 
-def modificar_contacto():
-    print()
+def modificar_contacto(contactos:list, email):
+    """
+    ...
+    """
+    try:
+        pos = buscar_contacto(contactos, email)
+        if pos != None:
+            print("Introduce nuevos datos para el contacto ")
+            introducir_nuevos_datos(contactos, pos)
+            print("Se modificó 1 contacto")
+        else:
+            print("No se encontró el contacto para modificar")
+    except Exception as e:
+            print(f"**Error** {e}")
+            print("No se eliminó ningún contacto")
+
+
+def introducir_nuevos_datos(contactos, pos):
+    """
+    ...
+    """
+    nombre = input("\nIngrese el nombre del contacto: ").title()
+    apellido = input("Ingrese el apellido del contacto: ").title()
+    email = pedir_email(contactos)
+    telefonos = pedir_telefono()
+
+    contactos[pos] = dict([ ("nombre", nombre), ("apellido", apellido), ("email", email), ("telefonos", telefonos) ])
 
 # ELIMINAR CONTACTO
 
@@ -174,19 +224,24 @@ def cargar_contactos():
     """ Carga los contactos iniciales de la agenda desde un fichero
     ...
     """
-    #TODO: Controlar los posibles problemas derivados del uso de ficheros...
-
     with open(RUTA_FICHERO, 'r') as fichero:
         for linea in fichero:
             print(linea)
 
 
 def vaciar_agenda(contactos : list):
+    """ Vacia la agenda
+    ...
+    """
     contactos.clear()
 
 
 def pedir_criterio():
+    """
+    ...
+    """
     criterio = False
+
     while not criterio:
         try:
             criterio = int(input("Elije un criterio: "))
@@ -200,7 +255,10 @@ def pedir_criterio():
 
 
 def mostrar_contactos_params(contactos : list, criterio : int):
-    contactos_ordenados = sorted(contactos, key=lambda x: x[criterio])
+    """
+    ...
+    """
+    contactos_ordenados = sorted(contactos, key=lambda x: x[OPCIONES_CRITERIO.get(criterio)])
 
     print(f"AGENDA ({len(contactos)}):")
     print("------")
@@ -213,7 +271,9 @@ def mostrar_contactos_params(contactos : list, criterio : int):
 
 
 def mostrar_contactos(contactos : list):
-    # Clonar la lista de contactos para no modificar la original
+    """
+    ...
+    """
     contactos_ordenados = sorted(contactos, key=lambda x: x['nombre'])
 
     print(f"AGENDA ({len(contactos)}):")
@@ -258,16 +318,17 @@ def agenda(contactos: list):
             
         pulse_tecla_para_continuar()
         borrar_consola()
+    
+    print ("Programa terminado")
 
 
 def main():
     """ Función principal del programa
+    ...
     """
     borrar_consola()
 
     contactos = []
-
-    #TODO: Modificar la función cargar_contactos para que almacene todos los contactos del fichero en una lista con un diccionario por contacto (claves: nombre, apellido, email y telefonos)
 
     mostrar_menu()
 
